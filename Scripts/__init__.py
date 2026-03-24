@@ -1,10 +1,9 @@
 """
-Filename: main.py
+Filename: __init__.py
 Description: Entrance script for Sacrament.
 Version: 1.0
 Author: Harspek
 Date: 08-03-2026
-TODO: Game loop
 """
 
 import data as _data

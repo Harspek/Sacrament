@@ -1,0 +1,18 @@
+- __init__.py -
+> Entrance script for the game
+> Imports : game, ui, data
+
+- game.py -
+> Gameplay related functions
+> Imports : quiz
+
+- quiz.py -
+> Puzzle related functions
+
+- ui.py -
+> Generation of the user interface
+> Imports : Tkinter
+
+- data.py -
+> Save and load functions
+> Imports : Json

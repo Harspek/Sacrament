@@ -9,22 +9,7 @@ TODO: UI
 
 import tkinter
 from tkinter import Tk
-
-# On initialization
-def __init__(self, root):
-    self._root = root
-
-# Insert into label
-def _insert_label(text):
-    dialog_label.configure(text=dialog_label.cget('text') + str(text))
-    dialog_label.update()
-
-# Change button names, used to represent inventory slots
-def _insert_button(text, number):
-    if number == 1: custom_button_1.config(text=text)
-    elif number == 2: custom_button_2.config(text=text)
-    elif number == 3: custom_button_3.config(text=text)
-    elif number == 4: custom_button_4.config(text=text)
+import asyncio
 
 # Button
 class CustomButton(tkinter.Button):
@@ -44,7 +29,6 @@ class CustomButton(tkinter.Button):
             height=3,
             width=6
         )
-
         # Bind events
         self.bind('<Enter>', self.on_hover)
         self.bind('<Leave>', self.on_leave)
@@ -96,19 +80,19 @@ class CustomField(tkinter.Entry):
             font=('Roboto Slab', 16),  # Set font
             foreground='black',  # Text color
             background='darkgray',  # Background color
-            width=50,
-            
+            width=50,    
         )
 
 # Window creation
 window = Tk()
 window.state('zoomed')
 window.title("Sacrament")
+window.minsize(1440, 960)
+window.maxsize(1920, 1920)
 window.config(background='lightgray')
-window.iconbitmap(r".\Sacrament\Additional Files\favicon.ico")
 
 # Instance each required widget
-dialog_label = DialogLabel(window, text="Brought to you by grand Harspek... Sacrament, the truly immersive adventure of a lifetime only for those with wits, mind and an eternity if time to waste\nThis is the next row of text\nAnd a third one, just for good measure")
+dialog_label = DialogLabel(window, text="Dialog Label")
 custom_button_1 = CustomButton(window, text="1")
 custom_button_2 = CustomButton(window, text="2")
 custom_button_3 = CustomButton(window, text="3")
@@ -127,10 +111,34 @@ custom_field.pack(padx=10, pady=50, anchor='s', side='right')
 custom_button_4.pack(padx=10, pady=10, anchor='s', side='right')
 instruct_label_2.pack(padx=10, pady=10, anchor='s', side='right')
 
-_insert_button('a',1)
-_insert_button('b',2)
-_insert_button('c',3)
-_insert_button('d',4)
+# On initialization
+def __init__(self, root):
+    self._root = root
 
-# Main loop
-window.mainloop()
+# Insert into label
+async def _insert_label(text):
+    for letter in text:
+        await asyncio.sleep(0.01)
+        dialog_label.configure(text=dialog_label.cget('text') + str(letter))
+        window.update_idletasks()
+        window.update()
+    dialog_label.configure(text=dialog_label.cget('text') + '\n')
+
+# Clear text label
+def _clear_label():
+    dialog_label.configure(text='')
+
+# Replacement for mainloop
+async def _update_window():
+    window.update_idletasks()
+    window.update()
+
+_clear_label()
+while True:
+    try: # A patchwerk fix for the error caused by the termination of a program in the middle of an async functions execution
+        asyncio.run(_update_window())
+        asyncio.run(_insert_label('Argus is my well fed child, his name comes from a game known to no child, for its story is endless in the wild'))
+        asyncio.run(_insert_label('Potato'))
+    except:
+        print('The program has been terminated...')
+        break
