@@ -1,17 +1,20 @@
 """
 Filename: data.py
-Description: Handles data management, such as saving and loading
-Version: 1.0
+Description: Handles saving and loading JSON files.
+Version: 1.1
 Author: Harspek
 Date: 08-03-2026
-TODO: Save, Load
 """
 
-def __init__(self):
-    pass
+import json
+from typing import Any
 
-def save():
-    pass
+filename = "data.json" # The name of the file where data will be saved and loaded from
 
-def load():
-    pass
+def save(information: Any) -> None: # Save data to a JSON file
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(information, f, ensure_ascii=False, indent=2)
+
+def load() -> Any: # Load data from a JSON file
+    with open(filename, "r", encoding="utf-8") as f:
+        return json.load(f)
