@@ -16,3 +16,27 @@
 - data.py -
 > Save and load functions
 > Imports : Json
+
+---------------------------------------------------------
+
+Interaction loop
+
+number = limited action pool
+typed  = choice from string
+
+Example :
+
+1. Use item : Takes from items
+    > shovel
+    > lantern
+2. Move to location : Takes from locations
+    > graveyard
+    > clearing
+3. Interact : Takes from puzzles
+    > item_1    # This will reward an item
+    > console   # This will initiate a puzzle
+4. Options : Some small stuff, like "save" and "exit"
+    > exit
+    > save
+
+Why these are separate buttons is compatability, cant have an exit option and an exit location otherwise
