@@ -1,22 +1,21 @@
 """
 Filename: ui.py
-Description: Includes functions for generation and management of the UI
+Description: Includes functions for UI generation and management
 Version: 1.0
 Author: Harspek
-Date: 08-03-2026
+Date: 27-03-2026
 TODO: UI
 """
 
 import tkinter
 from tkinter import Tk
-import asyncio
 
 # Button
 class CustomButton(tkinter.Button):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.config(
-            relief='groove',
+            relief='solid',
             bd=1,  # Remove border
             highlightthickness=0,  # Remove highlight
             padx=10,  # Add horizontal padding
@@ -32,6 +31,7 @@ class CustomButton(tkinter.Button):
         # Bind events
         self.bind('<Enter>', self.on_hover)
         self.bind('<Leave>', self.on_leave)
+        Tk.update(self)
 
     def on_hover(self, event):
         self.config(background='gray')  # Change color on hover
@@ -44,7 +44,7 @@ class DialogLabel(tkinter.Label):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.config(
-            relief='groove',
+            relief='solid',
             bd=1,
             highlightthickness=0,  # Remove highlight
             padx=10,  # Add horizontal padding
@@ -53,13 +53,14 @@ class DialogLabel(tkinter.Label):
             foreground='black',  # Text color
             background='darkgray',  # Background color
         )
+        Tk.update(self)
 
 # Label utilized for instucting on UI elements
 class InstructionLabel(tkinter.Label):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.config(
-            relief='flat',
+            relief='solid',
             bd=0,
             highlightthickness=0,  # Remove highlight
             padx=10,  # Add horizontal padding
@@ -68,13 +69,14 @@ class InstructionLabel(tkinter.Label):
             foreground='black',  # Text color
             background='lightgray',  # Background color
         )
+        Tk.update(self)
 
 # Text field
 class CustomField(tkinter.Entry):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.config(
-            relief='groove',
+            relief='solid',
             bd=1,
             highlightthickness=0,  # Remove highlight
             font=('Roboto Slab', 16),  # Set font
@@ -82,6 +84,12 @@ class CustomField(tkinter.Entry):
             background='darkgray',  # Background color
             width=50,    
         )
+        Tk.update(self)
+
+#class init():
+def __init__(self, root):
+    self._root = root
+    Tk.update(self)
 
 # Window creation
 window = Tk()
@@ -91,54 +99,40 @@ window.minsize(1440, 960)
 window.maxsize(1920, 1920)
 window.config(background='lightgray')
 
+def _as_updated(part):
+    Tk.update(part)
+    return part
+
 # Instance each required widget
-dialog_label = DialogLabel(window, text="Dialog Label")
-custom_button_1 = CustomButton(window, text="1")
-custom_button_2 = CustomButton(window, text="2")
-custom_button_3 = CustomButton(window, text="3")
-instruct_label_1 = InstructionLabel(window, text='Inventory')
-instruct_label_2 = InstructionLabel(window, text='Dialog Box')
-custom_button_4 = CustomButton(window, text="4")
-custom_field = CustomField(window)
+dialog_label = _as_updated(DialogLabel(window, text="Dialog Label"))
+custom_field = _as_updated(CustomField(window))
+custom_button_1 = _as_updated(CustomButton(window, text="1"))
+custom_button_2 = _as_updated(CustomButton(window, text="2"))
+custom_button_3 = _as_updated(CustomButton(window, text="3"))
+custom_button_4 = _as_updated(CustomButton(window, text="4"))
+instruct_label_1 = _as_updated(InstructionLabel(window, text='Inventory'))
+instruct_label_2 = _as_updated(InstructionLabel(window, text='Dialog Box'))
 
 # Pack widgets into window
-dialog_label.pack(fill='both', side='top', expand=1)
-custom_button_1.pack(padx=10, pady=10, anchor='s', side='left')
-custom_button_2.pack(padx=10, pady=10, anchor='s', side='left')
-custom_button_3.pack(padx=10, pady=10, anchor='s', side='left')
-instruct_label_1.pack(padx=10, pady=10, anchor='s', side='left')
-custom_field.pack(padx=10, pady=50, anchor='s', side='right')
-custom_button_4.pack(padx=10, pady=10, anchor='s', side='right')
-instruct_label_2.pack(padx=10, pady=10, anchor='s', side='right')
+dialog_label.place(relx=0, relheight=0.8, relwidth=1)
+custom_button_1.place(relx=0.3925, rely=0.9)
+custom_button_2.place(relx=0.4475, rely=0.9)
+custom_button_3.place(relx=0.5025, rely=0.9)
+custom_button_4.place(relx=0.5575, rely=0.9)
+custom_field.place(relx=0.35, rely=0.8425)
 
-# On initialization
-def __init__(self, root):
-    self._root = root
-
-# Insert into label
-async def _insert_label(text):
-    for letter in text:
-        await asyncio.sleep(0.01)
-        dialog_label.configure(text=dialog_label.cget('text') + str(letter))
-        window.update_idletasks()
-        window.update()
-    dialog_label.configure(text=dialog_label.cget('text') + '\n')
+#custom_field.pack(padx=10, pady=50, anchor='s', side='right')
+#custom_button_4.pack(padx=10, pady=10, anchor='s', side='right')
+#instruct_label_2.pack(padx=10, pady=10, anchor='s', side='right')
 
 # Clear text label
 def _clear_label():
     dialog_label.configure(text='')
 
-# Replacement for mainloop
-async def _update_window():
-    window.update_idletasks()
-    window.update()
+# Insert into label
+def _insert_label(text):
+    dialog_label.configure(text=dialog_label.cget('text') + str(text))
 
-_clear_label()
-while True:
-    try: # A patchwerk fix for the error caused by the termination of a program in the middle of an async functions execution
-        asyncio.run(_update_window())
-        asyncio.run(_insert_label('Argus is my well fed child, his name comes from a game known to no child, for its story is endless in the wild'))
-        asyncio.run(_insert_label('Potato'))
-    except:
-        print('The program has been terminated...')
-        break
+# Replacement for mainloop
+def _update_window():
+    window.update()
