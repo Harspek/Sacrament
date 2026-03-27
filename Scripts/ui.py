@@ -99,19 +99,13 @@ window.minsize(1440, 960)
 window.maxsize(1920, 1920)
 window.config(background='lightgray')
 
-def _as_updated(part):
-    Tk.update(part)
-    return part
-
 # Instance each required widget
-dialog_label = _as_updated(DialogLabel(window, text="Dialog Label"))
-custom_field = _as_updated(CustomField(window))
-custom_button_1 = _as_updated(CustomButton(window, text="1"))
-custom_button_2 = _as_updated(CustomButton(window, text="2"))
-custom_button_3 = _as_updated(CustomButton(window, text="3"))
-custom_button_4 = _as_updated(CustomButton(window, text="4"))
-instruct_label_1 = _as_updated(InstructionLabel(window, text='Inventory'))
-instruct_label_2 = _as_updated(InstructionLabel(window, text='Dialog Box'))
+dialog_label = DialogLabel(window, text="Dialog Label")
+custom_field = CustomField(window)
+custom_button_1 = CustomButton(window, text="1")
+custom_button_2 = CustomButton(window, text="2")
+custom_button_3 = CustomButton(window, text="3")
+custom_button_4 = CustomButton(window, text="4")
 
 # Pack widgets into window
 dialog_label.place(relx=0, relheight=0.8, relwidth=1)
@@ -120,10 +114,6 @@ custom_button_2.place(relx=0.4475, rely=0.9)
 custom_button_3.place(relx=0.5025, rely=0.9)
 custom_button_4.place(relx=0.5575, rely=0.9)
 custom_field.place(relx=0.35, rely=0.8425)
-
-#custom_field.pack(padx=10, pady=50, anchor='s', side='right')
-#custom_button_4.pack(padx=10, pady=10, anchor='s', side='right')
-#instruct_label_2.pack(padx=10, pady=10, anchor='s', side='right')
 
 # Clear text label
 def _clear_label():

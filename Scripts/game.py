@@ -7,6 +7,11 @@ Date: 08-03-2026
 TODO: Wander
 """
 
+player = {
+    'location': 'start',
+    'inv': []
+}
+
 def __init__(self):
     pass
 def item(): # Require an item to pass

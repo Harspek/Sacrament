@@ -6,14 +6,12 @@ Author: Harspek
 Date: 08-03-2026
 """
 
-import data
-import game
-import ui
+import data # Savefile and parsing management
+import game # Gameplay management
+import ui # User interface management
 
-player = {
-    'location': 'start',
-    'inv': []
-}
+ui._clear_label()
+ui._insert_label('This text is for alternate purposes')
 
 while True: # Main loop
     ui._update_window() # Refreshes the UI, has to happen every frame, or the screen freezes / the application shuts down
