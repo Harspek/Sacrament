@@ -1,1 +1,0 @@
-py C:\Users\Gilas\Documents\Lerning\Sacrament\ui.py
