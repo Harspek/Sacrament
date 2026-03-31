@@ -10,6 +10,8 @@ TODO: UI
 import tkinter
 from tkinter import Tk
 
+active = True
+
 # Button
 class CustomButton(tkinter.Button):
     def __init__(self, master=None, **kwargs):
@@ -91,6 +93,11 @@ def __init__(self, root):
     self._root = root
     Tk.update(self)
 
+def _on_close(): # Tkinter handles closing the window, but certain additional functionalities have to cease alongside it so the handling is moved to our code
+    global active
+    active = False
+    print('Window has closed')
+
 # Window creation
 window = Tk()
 window.state('zoomed')
@@ -98,6 +105,7 @@ window.title("Sacrament")
 window.minsize(1440, 960)
 window.maxsize(1920, 1920)
 window.config(background='lightgray')
+window.protocol('WM_DELETE_WINDOW', _on_close)
 
 # Instance each required widget
 dialog_label = DialogLabel(window, text="Dialog Label")
@@ -117,12 +125,15 @@ custom_field.place(relx=0.35, rely=0.8425)
 
 # Clear text label
 def _clear_label():
+    """Clears the front textfield of all text"""
     dialog_label.configure(text='')
 
 # Insert into label
 def _insert_label(text):
+    """Adds text to the front textfield"""
     dialog_label.configure(text=dialog_label.cget('text') + str(text))
 
 # Replacement for mainloop
 def _update_window():
+    """Updates the user interface"""
     window.update()
