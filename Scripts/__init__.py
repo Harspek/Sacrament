@@ -1,7 +1,7 @@
 """
 Filename: __init__.py
 Description: Entrance script for Sacrament.
-Version: 1.0
+Version: 1.1
 Author: Harspek
 Date: 08-03-2026
 """

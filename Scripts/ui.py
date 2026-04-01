@@ -1,7 +1,7 @@
 """
 Filename: ui.py
 Description: Includes functions for UI generation and management
-Version: 1.0
+Version: 1.1
 Author: Harspek
 Date: 27-03-2026
 TODO: UI

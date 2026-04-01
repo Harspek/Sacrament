@@ -1,7 +1,7 @@
 """
 Filename: game.py
 Description: Various functions for the in-game experience
-Version: 1.0
+Version: 1.1
 Author: Harspek
 Date: 08-03-2026
 TODO: Wander
