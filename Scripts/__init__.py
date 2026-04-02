@@ -11,8 +11,9 @@ import game # Gameplay management
 import ui # User interface management
 
 ui._clear_label()
-ui._insert_label('Did you know...\nThis textfield breaks a little bit if you make the window too small\nThis means i am forced to make the screen a certain size to that it does not shatter the entire thing')
+ui._insert_label('You awaken in a dreadful graveyard.\nThe air is thick with the scent of decay, and the moon casts eerie shadows on the tombstones.\nYou see a path leading north.')
+game.print_available()
 
 while ui.active: # Main loop
     ui._update_window() # Refreshes the UI, has to happen every frame, or the screen freezes / the application shuts down
-    # game.logic()
+    
