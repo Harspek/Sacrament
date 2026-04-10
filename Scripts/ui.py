@@ -104,6 +104,13 @@ def _on_close(): # Tkinter handles closing the window, but certain additional fu
     active = False
     print('Window has closed')
 
+def key_handler(event): 
+    """Handles keyboard events"""
+    print(event.char, event.keysym, event.keycode)
+    if event.keysym == 'Return':
+        # Passes the text from custom_field to the code for interpretation
+        pass
+
 # Window creation
 window = Tk()
 window.state('zoomed')
@@ -112,6 +119,7 @@ window.minsize(1440, 960)
 window.maxsize(1920, 1920)
 window.config(background='lightgray')
 window.protocol('WM_DELETE_WINDOW', _on_close)
+window.bind("<Key>", key_handler) # Handles keyboard input
 
 # Instance each required widget
 """TODO: Add functionality to custom_button 1-4, as described in the adjacent comments"""

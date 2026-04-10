@@ -89,3 +89,5 @@ def _puzzle_answer(): # Require the correct answer
 
 ui.custom_button_1._bind_action(print_available)
 ui.custom_button_2._bind_action(print_inventory)
+# ui.custom_button_3._bind_action(print_drop)
+# ui.custom_button_4._bind_action(print_menu)
