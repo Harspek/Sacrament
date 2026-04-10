@@ -108,13 +108,14 @@ window.config(background='lightgray')
 window.protocol('WM_DELETE_WINDOW', _on_close)
 
 # Instance each required widget
+"""TODO: Add functionality to custom_button 1-4, as described in the adjacent comments"""
 dialog_label = DialogLabel(window, text="Dialog Label")
 custom_field = CustomField(window)
-custom_button_1 = CustomButton(window, text="1")
-custom_button_2 = CustomButton(window, text="2")
-custom_button_3 = CustomButton(window, text="3")
-custom_button_4 = CustomButton(window, text="4")
-
+custom_button_1 = CustomButton(window, text="Look around") # This button will reveal actions
+custom_button_2 = CustomButton(window, text="Use an item") # Used when the user wants to use an item
+custom_button_3 = CustomButton(window, text="Drop an item") # Used then the player wants to drop an item, to free up inventory slots 
+custom_button_4 = CustomButton(window, text="Menu") # Opens up options for exiting the game, saving and loading (1x slots available)
+ 
 # Pack widgets into window
 dialog_label.place(relx=0, relheight=0.8, relwidth=1)
 custom_button_1.place(relx=0.3925, rely=0.9)

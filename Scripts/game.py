@@ -50,33 +50,25 @@ def print_available():
     options.clear() # Reset options for the new available set
     ui._insert_label('\n')
     count = 1
-    try:
-        for exit in world[player['location']]['exits']: 
+    location = world[player['location']] # The locations information
+    if location['exits'] != []:
+        for exit in location['exits']: 
             ui._insert_label(f'\n{count}. Exit to {exit}')
             options.append(exit)
             count += 1 
-    except KeyError:
-        # Location lacks exits, which is very unlikely
-        pass
 
-    try:
-        for item in world[player['location']]['items']:
+    if location['items'] != []:
+        for item in location['items']:
             ui._insert_label(f'\n{count}. Pick up {item}')
             options.append(item)
             count += 1
-    except KeyError:
-        # Location lacks items
-        pass
 
-    try:
-        for puzzle in world[player['location']]['puzzles']:
+    if location['puzzles']:
+        for puzzle in location['puzzles']:
             if puzzle['type'] != 'hidden':
                 ui._insert_label(f'\n{count}. {puzzle['desc']}')
                 options.append(puzzle)
                 count += 1
-    except KeyError:
-        # Location lacks puzzles
-        pass
     
 def item(): # Require an item to pass
     return True
