@@ -28,7 +28,7 @@ class CustomButton(tkinter.Button):
             activeforeground='white',
             activebackground='black',
             height=3,
-            width=6
+            width=12
         )
         # Bind events
         self.bind('<Enter>', self.on_hover)
@@ -36,10 +36,16 @@ class CustomButton(tkinter.Button):
         Tk.update(self)
 
     def on_hover(self, event):
+        """Event for when button is hovered"""
         self.config(background='gray')  # Change color on hover
 
     def on_leave(self, event):
+        """Event for when the button is unhovered"""
         self.config(background='darkgray')  # Restore original color
+
+    def _bind_action(self, action):
+        """Binds an action to the button : Be noted that an 'Event' is passed to the function, so an argument for it is required"""
+        self.bind('<ButtonPress>', action)
 
 # Label utilized as console replacement
 class DialogLabel(tkinter.Label):
@@ -84,7 +90,7 @@ class CustomField(tkinter.Entry):
             font=('Roboto Slab', 16),  # Set font
             foreground='black',  # Text color
             background='darkgray',  # Background color
-            width=50,    
+            width=62,    
         )
         Tk.update(self)
 
@@ -115,14 +121,14 @@ custom_button_1 = CustomButton(window, text="Look around") # This button will re
 custom_button_2 = CustomButton(window, text="Use an item") # Used when the user wants to use an item
 custom_button_3 = CustomButton(window, text="Drop an item") # Used then the player wants to drop an item, to free up inventory slots 
 custom_button_4 = CustomButton(window, text="Menu") # Opens up options for exiting the game, saving and loading (1x slots available)
- 
+
 # Pack widgets into window
 dialog_label.place(relx=0, relheight=0.8, relwidth=1)
-custom_button_1.place(relx=0.3925, rely=0.9)
-custom_button_2.place(relx=0.4475, rely=0.9)
-custom_button_3.place(relx=0.5025, rely=0.9)
-custom_button_4.place(relx=0.5575, rely=0.9)
-custom_field.place(relx=0.35, rely=0.8425)
+custom_button_1.place(relx=0.3, rely=0.9)
+custom_button_2.place(relx=0.4, rely=0.9)
+custom_button_3.place(relx=0.5, rely=0.9)
+custom_button_4.place(relx=0.6, rely=0.9)
+custom_field.place(relx=0.3, rely=0.8425)
 
 # Clear text label
 def _clear_label():
@@ -138,3 +144,5 @@ def _insert_label(text):
 def _update_window():
     """Updates the user interface"""
     window.update()
+
+custom_button_1._bind_action(_clear_label)
