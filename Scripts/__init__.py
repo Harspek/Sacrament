@@ -11,8 +11,7 @@ import game # Gameplay management
 import ui # User interface management
 
 ui._clear_label()
-ui._insert_label('You awaken in a dreadful graveyard.\nThe air is thick with the scent of decay, and the moon casts eerie shadows on the tombstones.\nYou see a path leading north.')
-game.print_available()
+game.print_available('nil')
 
 while ui.active: # Main loop
     ui._update_window() # Refreshes the UI, has to happen every frame, or the screen freezes / the application shuts down

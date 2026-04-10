@@ -12,7 +12,7 @@ import ui
 
 player = { # Received items and current location
     'location': 'clearing', 
-    'inv': []
+    'inv': ['sword']
 }
 
 world = { # The entire world, which this file could be transferred to a JSON
@@ -42,13 +42,16 @@ world = { # The entire world, which this file could be transferred to a JSON
     },
 }
 
+# Information printing functions
+
 options = [] # Kept outside of def for usage outside of the functions loop
-def print_available():
+def print_available(nil):
     """
     Prints out all available actions within a room for the player to do (exits, items, puzzles)
     """
+    ui._clear_label()
+    ui._insert_label(f'{world[player['location']]['desc']}\n')
     options.clear() # Reset options for the new available set
-    ui._insert_label('\n')
     count = 1
     location = world[player['location']] # The locations information
     if location['exits'] != []:
@@ -70,7 +73,19 @@ def print_available():
                 options.append(puzzle)
                 count += 1
     
-def item(): # Require an item to pass
+def print_inventory(nil):
+    ui._clear_label()
+    count = 1
+    ui._insert_label(f'You check inside your bag and find...\n\n')
+    for item in player['inv']:
+        ui._insert_label(f'{count}. {item}\n')
+        count += 1
+
+# Puzzle functions
+def _puzzle_item(): # Require an item to pass
     return True
-def answer(): # Require the correct answer
+def _puzzle_answer(): # Require the correct answer
     return True
+
+ui.custom_button_1._bind_action(print_available)
+ui.custom_button_2._bind_action(print_inventory)

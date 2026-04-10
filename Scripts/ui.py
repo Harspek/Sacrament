@@ -10,7 +10,7 @@ TODO: UI
 import tkinter
 from tkinter import Tk
 
-active = True
+active = True # When active is set to false, the loop within __init__ ends, terminating the program
 
 # Button
 class CustomButton(tkinter.Button):
@@ -144,5 +144,3 @@ def _insert_label(text):
 def _update_window():
     """Updates the user interface"""
     window.update()
-
-custom_button_1._bind_action(_clear_label)
