@@ -11,7 +11,7 @@ import data
 import ui
 
 player = { # Received items and current location
-    'location': 'clearing', 
+    'location': 'graveyard', 
     'inv': ['sword']
 }
 
@@ -32,7 +32,6 @@ world = { # The entire world, which this file could be transferred to a JSON
         'items': ['flower'],
         'puzzles': [
             {
-                'type': 'item', 
                 'desc': 'Dig with shovel',
                 'requirement': 'shovel', 
                 'message': 'You dig the ground in the middle of the clearing, discovering a buried chest', 
@@ -44,50 +43,53 @@ world = { # The entire world, which this file could be transferred to a JSON
 
 # Information printing functions
 
-options = [] # Kept outside of def for usage outside of the functions loop
-def print_available(nil):
+def has_in_inv(to_find: str):
+    for item in player['inv']:
+        if item == to_find:
+            return True
+    return False
+
+options = []
+def print_location(nil):
     """
     Prints out all available actions within a room for the player to do (exits, items, puzzles)
     """
     ui._clear_label()
     ui._insert_label(f'{world[player['location']]['desc']}\n')
-    options.clear() # Reset options for the new available set
     count = 1
+    options.clear
     location = world[player['location']] # The locations information
-    if location['exits'] != []:
+    if 'exits' in location:
         for exit in location['exits']: 
             ui._insert_label(f'\n{count}. Exit to {exit}')
-            options.append(exit)
             count += 1 
+            options.append({'type': 'location', 'specific': exit})
 
-    if location['items'] != []:
+    if 'items' in location:
         for item in location['items']:
             ui._insert_label(f'\n{count}. Pick up {item}')
-            options.append(item)
             count += 1
+            options.append({'type': 'item', 'specific': item})
 
-    if location['puzzles']:
+    if 'puzzles' in location:
         for puzzle in location['puzzles']:
-            if puzzle['type'] != 'hidden':
+            if has_in_inv(puzzle['requirement']):
                 ui._insert_label(f'\n{count}. {puzzle['desc']}')
-                options.append(puzzle)
                 count += 1
+                options.append({'type': 'puzzle', 'specific': puzzle['requirement']})
     
 def print_inventory(nil):
     ui._clear_label()
-    count = 1
     ui._insert_label(f'You check inside your bag and find...\n\n')
+    options.clear()
     for item in player['inv']:
-        ui._insert_label(f'{count}. {item}\n')
-        count += 1
+        ui._insert_label(f'{item}\n')
 
-# Puzzle functions
-def _puzzle_item(): # Require an item to pass
-    return True
-def _puzzle_answer(): # Require the correct answer
-    return True
+def print_menu(nil):
+    ui._clear_label()
+    ui._insert_label('Sacrament\nA text adventure made by Lassi & Lauri\n\n1. Save\n 2. Load\n3. Exit')
 
-ui.custom_button_1._bind_action(print_available)
+
+ui.custom_button_1._bind_action(print_location)
 ui.custom_button_2._bind_action(print_inventory)
-# ui.custom_button_3._bind_action(print_drop)
-# ui.custom_button_4._bind_action(print_menu)
+ui.custom_button_3._bind_action(print_menu)

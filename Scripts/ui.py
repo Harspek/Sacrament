@@ -8,6 +8,7 @@ TODO: UI
 """
 
 import tkinter
+import game
 from tkinter import Tk
 
 active = True # When active is set to false, the loop within __init__ ends, terminating the program
@@ -29,6 +30,41 @@ class CustomButton(tkinter.Button):
             activebackground='black',
             height=3,
             width=12
+        )
+        # Bind events
+        self.bind('<Enter>', self.on_hover)
+        self.bind('<Leave>', self.on_leave)
+        Tk.update(self)
+
+    def on_hover(self, event):
+        """Event for when button is hovered"""
+        self.config(background='gray')  # Change color on hover
+
+    def on_leave(self, event):
+        """Event for when the button is unhovered"""
+        self.config(background='darkgray')  # Restore original color
+
+    def _bind_action(self, action):
+        """Binds an action to the button : Be noted that an 'Event' is passed to the function, so an argument for it is required"""
+        self.bind('<ButtonPress>', action)
+
+# Additional smaller button
+class AdditionButton(tkinter.Button):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        self.config(
+            relief='solid',
+            bd=1,  # Remove border
+            highlightthickness=0,  # Remove highlight
+            padx=10,  # Add horizontal padding
+            pady=5,  # Add vertical padding
+            font=('Roboto Slab', 16),  # Set font
+            foreground='black',  # Text color
+            background='darkgray',  # Background color
+            activeforeground='white',
+            activebackground='black',
+            height=1,
+            width=2
         )
         # Bind events
         self.bind('<Enter>', self.on_hover)
@@ -94,9 +130,7 @@ class CustomField(tkinter.Entry):
         )
         Tk.update(self)
     def retrieve_input(self):
-        return self.get("1.0",'end-1c')
-
-
+        return self.get()
 
 #class init():
 def __init__(self, root):
@@ -110,14 +144,18 @@ def _on_close(): # Tkinter handles closing the window, but certain additional fu
 
 def key_handler(event): 
     """Handles keyboard events"""
-    print(event.char, event.keysym, event.keycode)
+    #print(event.char, event.keysym, event.keycode)
     if event.keysym == 'Return':
         input_text = custom_field.retrieve_input()
         try:
             # If the input is a value, we can assume it is relevant to selection of a currently available option
-            input_value = int(input_text)
-            
-        pass
+            cast_to_val = int(input_text)
+            print(cast_to_val)
+            pass
+        except:
+            # The input is not a value, so it is an answer
+            print('Unable to cast to integer')
+            pass
 
 # Window creation
 window = Tk()
@@ -130,20 +168,17 @@ window.protocol('WM_DELETE_WINDOW', _on_close)
 window.bind("<Key>", key_handler) # Handles keyboard input
 
 # Instance each required widget
-"""TODO: Add functionality to custom_button 1-4, as described in the adjacent comments"""
 dialog_label = DialogLabel(window, text="Dialog Label")
 custom_field = CustomField(window)
 custom_button_1 = CustomButton(window, text="Look around") # This button will reveal actions
-custom_button_2 = CustomButton(window, text="Use an item") # Used when the user wants to use an item
-custom_button_3 = CustomButton(window, text="Drop an item") # Used then the player wants to drop an item, to free up inventory slots 
-custom_button_4 = CustomButton(window, text="Menu") # Opens up options for exiting the game, saving and loading (1x slots available)
+custom_button_2 = CustomButton(window, text="Check inventory") # Used when the user wants to use an item
+custom_button_3 = CustomButton(window, text="Menu") # Used then the player wants to drop an item, to free up inventory slots 
 
 # Pack widgets into window
 dialog_label.place(relx=0, relheight=0.8, relwidth=1)
-custom_button_1.place(relx=0.3, rely=0.9)
-custom_button_2.place(relx=0.4, rely=0.9)
-custom_button_3.place(relx=0.5, rely=0.9)
-custom_button_4.place(relx=0.6, rely=0.9)
+custom_button_1.place(relx=0.35, rely=0.9)
+custom_button_2.place(relx=0.45, rely=0.9)
+custom_button_3.place(relx=0.55, rely=0.9)
 custom_field.place(relx=0.3, rely=0.8425)
 
 # Clear text label

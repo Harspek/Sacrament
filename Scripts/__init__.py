@@ -11,7 +11,7 @@ import game # Gameplay management
 import ui # User interface management
 
 ui._clear_label()
-game.print_available('nil')
+game.print_location('nil')
 
 while ui.active: # Main loop
     ui._update_window() # Refreshes the UI, has to happen every frame, or the screen freezes / the application shuts down
