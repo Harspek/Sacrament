@@ -93,6 +93,10 @@ class CustomField(tkinter.Entry):
             width=62,    
         )
         Tk.update(self)
+    def retrieve_input(self):
+        return self.get("1.0",'end-1c')
+
+
 
 #class init():
 def __init__(self, root):
@@ -108,7 +112,11 @@ def key_handler(event):
     """Handles keyboard events"""
     print(event.char, event.keysym, event.keycode)
     if event.keysym == 'Return':
-        # Passes the text from custom_field to the code for interpretation
+        input_text = custom_field.retrieve_input()
+        try:
+            # If the input is a value, we can assume it is relevant to selection of a currently available option
+            input_value = int(input_text)
+            
         pass
 
 # Window creation
