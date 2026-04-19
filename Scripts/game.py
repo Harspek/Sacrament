@@ -23,7 +23,7 @@ world = { # The entire world, which this file could be transferred to a JSON
     },
     'pathway': {
         'desc': 'You are on a narrow path winding through the graveyard.\nTo the west you notice a tall church, its bells silent.\nTowards north a lack of anything fills you with a strange feeling',
-        'exits': ['graveyard', 'church', 'clearing'],
+        'exits': ['graveyard', 'church', 'clearing', 'forest'],
         'items': []
     },
     'clearing': {
@@ -39,15 +39,67 @@ world = { # The entire world, which this file could be transferred to a JSON
             }
         ]
     },
+    'forest':
+    {
+        'desc': 'You exit the graveyards grounds and enter a vast forest, you get a sense of dread...',
+        'exits': ['pathway', 'cabin', 'river'],
+        'items': ['shovel']
+    },
+    'river':
+    {
+        'desc': 'You move towards a strange sound and discover... a flowing river',
+        'exits': ['forest'],
+        'puzzles': [ 
+            {
+                'desc': 'Take water with the bucket',
+                'requirement': 'shovel', 
+                'message': 'You dig the ground in the middle of the clearing, discovering a buried chest', 
+                'reward': 'water'
+            }
+        ]
+    },
+    'cabin': {
+        'desc': 'You enter the cabin in the woods, within it a simple bed, a chair and a burning fireplace',
+        'exits': ['forest'],
+        'items': ['bucket'],
+        'puzzles': [
+            {
+                'desc': 'Put out the fireplace',
+                'requirement': 'water',
+                'message': 'You use the bucket of water to put out the fireplace and discover the Mark of Madness',
+                'reward': 'Mark of Madness'
+
+            }
+        ]
+    },
+    'church': {
+        'desc': 'You enter a grand structure, the church...\nWithin its center stands a dread icon, its form marred by empty marks',
+        'exits': ['pathway'],
+        'items': ['Mark of Whispers'],
+        'puzzles': [
+            {
+                'desc': 'Give unto the icon the Mark of Madness',
+                'requirement': 'Mark of Madness',
+                'message': 'One mark has been returned, the dread icon is closer to awakening',
+                'reward': 'Erebus'
+            },
+            {
+                'desc': 'Give unto the icon the Mark of Whispers',
+                'requirement': 'Mark of Whispers',
+                'message': 'One mark has been returned, the dread icon is closer to awakening',
+                'reward': 'Erebus'
+            },
+            {
+                'desc': 'Give unto the icon the Mark of Secrets',
+                'requirement': 'Mark of Secrets',
+                'message': 'One mark has been returned, the dread icon is closer to awakening',
+                'reward': 'Erebus'
+            }
+        ]
+    }
 }
 
 # Information printing functions
-
-def has_in_inv(to_find: str):
-    for item in player['inv']:
-        if item == to_find:
-            return True
-    return False
 
 options = []
 def print_location(nil):
@@ -73,7 +125,7 @@ def print_location(nil):
 
     if 'puzzles' in location:
         for puzzle in location['puzzles']:
-            if has_in_inv(puzzle['requirement']):
+            if puzzle['requirement'] in player['inv']:
                 ui._insert_label(f'\n{count}. {puzzle['desc']}')
                 count += 1
                 options.append({'type': 'puzzle', 'specific': puzzle['requirement']})
