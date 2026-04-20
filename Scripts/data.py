@@ -1,7 +1,7 @@
 """
 Filename: data.py
 Description: Handles saving and loading JSON files.
-Version: 1.1
+Version: 1.2
 Author: Harspek
 Date: 08-03-2026
 """

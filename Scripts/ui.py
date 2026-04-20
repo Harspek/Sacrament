@@ -1,15 +1,16 @@
 """
 Filename: ui.py
 Description: Includes functions for UI generation and management
-Version: 1.1
+Version: 1.2
 Author: Harspek
 Date: 27-03-2026
 TODO: UI
 """
 
 import tkinter
-import game
 from tkinter import Tk
+import game
+import data
 
 active = True # When active is set to false, the loop within __init__ ends, terminating the program
 
@@ -30,41 +31,6 @@ class CustomButton(tkinter.Button):
             activebackground='black',
             height=3,
             width=12
-        )
-        # Bind events
-        self.bind('<Enter>', self.on_hover)
-        self.bind('<Leave>', self.on_leave)
-        Tk.update(self)
-
-    def on_hover(self, event):
-        """Event for when button is hovered"""
-        self.config(background='gray')  # Change color on hover
-
-    def on_leave(self, event):
-        """Event for when the button is unhovered"""
-        self.config(background='darkgray')  # Restore original color
-
-    def _bind_action(self, action):
-        """Binds an action to the button : Be noted that an 'Event' is passed to the function, so an argument for it is required"""
-        self.bind('<ButtonPress>', action)
-
-# Additional smaller button
-class AdditionButton(tkinter.Button):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.config(
-            relief='solid',
-            bd=1,  # Remove border
-            highlightthickness=0,  # Remove highlight
-            padx=10,  # Add horizontal padding
-            pady=5,  # Add vertical padding
-            font=('Roboto Slab', 16),  # Set font
-            foreground='black',  # Text color
-            background='darkgray',  # Background color
-            activeforeground='white',
-            activebackground='black',
-            height=1,
-            width=2
         )
         # Bind events
         self.bind('<Enter>', self.on_hover)
@@ -149,13 +115,44 @@ def key_handler(event):
         input_text = custom_field.retrieve_input()
         try:
             # If the input is a value, we can assume it is relevant to selection of a currently available option
-            cast_to_val = int(input_text)
-            print(cast_to_val)
+            option = options[int(input_text) - 1]
+            if option['type'] == 'location': # If the option is defined as a location, the user is set to that location and the information is printed
+                game.player['location'] = option['specific']
+                print_location('')
+
+            elif option['type'] == 'item': # If the option is defined as an item, the item is added to their inventory
+                game.player['inv'].append(option['specific'])
+                game.world[game.player['location']]['items'].remove(option['specific'])
+                print_location('')
+                _insert_label(f'\n\nYou took the {option['specific']}')
+
+            elif option['type'] == 'puzzle':
+                game.player['inv'].remove(game.world[game.player['location']] ['puzzles'] [option['specific']] ['requirement'])
+                game.player['inv'].append(game.world[game.player['location']] ['puzzles'] [option['specific']] ['reward'])
+                label_text = game.world[game.player['location']] ['puzzles'] [option['specific']] ['message']
+                game.world[game.player['location']] ['puzzles'].pop(option['specific'])
+                print_location('')
+                _insert_label(f'\n\n{label_text}')
+
+                if game.check_condition():
+                    window.destroy()
+                    print('Annihilation...\n - THE END -')
+            
+            elif option['type'] == 'menu':
+                if option['specific'] == 'save':
+                    data.save('player', game.player)
+                    data.save('world', game.world)
+                    pass
+                elif option['specific'] == 'load':
+                    game.player = data.load('player')
+                    game.world = data.load('world')
+                elif option['specific'] == 'exit':
+                    window.destroy()
+
+        except ValueError:
+            # The input is not a value, and as such the input is passed
             pass
-        except:
-            # The input is not a value, so it is an answer
-            print('Unable to cast to integer')
-            pass
+
 
 # Window creation
 window = Tk()
@@ -195,3 +192,55 @@ def _insert_label(text):
 def _update_window():
     """Updates the user interface"""
     window.update()
+
+# Text information functionalities
+options = [] # Stores all available options for actions
+def print_location(nil):
+    """
+    Prints out all available actions within a room for the player to do (exits, items, puzzles)
+    """
+    _clear_label()
+    _insert_label(f'{game.world[game.player['location']]['desc']}\n')
+    count = 1
+    options.clear()
+    location = game.world[game.player['location']] # The locations information
+    if 'exits' in location: # Checking for attached rooms
+        for exit in location['exits']: 
+            _insert_label(f'\n{count}. Exit to {exit}')
+            count += 1 
+            options.append({'type': 'location', 'specific': exit})
+
+    if 'items' in location: # Checking for items within the location
+        for item in location['items']:
+            _insert_label(f'\n{count}. Pick up {item}')
+            count += 1
+            options.append({'type': 'item', 'specific': item})
+
+    if 'puzzles' in location: # Checking for puzzles available for completion
+        i = 0
+        for puzzle in location['puzzles']:
+            if puzzle['requirement'] in game.player['inv']:
+                _insert_label(f'\n{count}. {puzzle['desc']}')
+                count += 1
+                options.append({'type': 'puzzle', 'specific': i})
+                i += 1 # This value is used to match the puzzle from the list of puzzles
+    
+def print_inventory(nil):
+    _clear_label()
+    _insert_label(f'You check inside your bag and find...\n\n')
+    options.clear()
+    for item in game.player['inv']:
+        _insert_label(f'{item}\n')
+
+def print_menu(nil):
+    _clear_label()
+    _insert_label('Sacrament\nA text adventure made by Lassi & Lauri\n\n1. Save\n 2. Load\n3. Exit')
+    options.clear()
+    options.append({'type': 'menu', 'specific': 'save'})
+    options.append({'type': 'menu', 'specific': 'load'})
+    options.append({'type': 'menu', 'specific': 'exit'})
+
+# Binding to UI
+custom_button_1._bind_action(print_location)
+custom_button_2._bind_action(print_inventory)
+custom_button_3._bind_action(print_menu)
