@@ -13,16 +13,16 @@ player = { # Received items and current location
 }
 
 world = { # The entire world, which this file could be transferred to a JSON
-    'graveyard': {
-        'desc': 'The air is thick with the scent of decay, and the moon casts eerie shadows on the tombstones.\nYou see a path leading north.',
-        'exits': ['pathway'],
-        'items': [],
-        'puzzles': [
+    'graveyard': { # Location
+        'desc': 'The air is thick with the scent of decay, and the moon casts eerie shadows on the tombstones.\nYou see a path leading north.', # Description of location
+        'exits': ['pathway'], # Locations you can access from this one
+        'items': [], # Items you can find in this location
+        'puzzles': [ # Puzzle if any in the current location
             {
-                'desc': 'Give unto the icon the Mark of Madness',
-                'requirement': 'Mark of Madness',
-                'message': 'One mark has been returned, the dread icon is closer to awakening',
-                'reward': 'Erebus'
+                'desc': 'Give unto the icon the Mark of Madness', # Description of the puzzle
+                'requirement': 'Mark of Madness', # Requirements you need to complete the puzzle
+                'message': 'One mark has been returned, the dread icon is closer to awakening', # Message you get from completing the puzzle
+                'reward': 'Erebus' # Reward of the puzzle completion - Item / Victory condition
             },
             {
                 'desc': 'Give unto the icon the Mark of Whispers',
@@ -38,22 +38,22 @@ world = { # The entire world, which this file could be transferred to a JSON
             }
         ]
     },
-    'pathway': {
-        'desc': 'You are on a narrow path winding through the graveyard.\nTo the west you notice a tall church, its bells silent.\nTowards north a lack of anything fills you with a strange feeling',
-        'exits': ['graveyard', 'church', 'clearing', 'forest'],
-        'items': [],
+    'pathway': { 
+        'desc': 'You are on a narrow path winding through the graveyard.\nTo the west you notice a tall church, its bells silent.\nTowards north a lack of anything fills you with a strange feeling', 
+        'exits': ['graveyard', 'church', 'clearing', 'forest'], 
+        'items': [], 
         'puzzles': []
     },
-    'clearing': {
+    'clearing': { 
         'desc': 'You enter a clearing, strangely in the middle of a graveyard...',
         'exits': ['pathway'],
         'items': [],
-        'puzzles': [
+        'puzzles': [ 
             {
-                'desc': 'Dig with shovel',
+                'desc': 'Dig with shovel', 
                 'requirement': 'shovel', 
                 'message': 'You dig the ground in the middle of the clearing, discovering a buried chest', 
-                'reward': 'Mark of Secrets'
+                'reward': 'Mark of Secrets' 
             }
         ]
     },
