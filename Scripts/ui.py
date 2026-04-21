@@ -148,9 +148,14 @@ def key_handler(event):
                     print_menu('')
                     _insert_label('\n\nSaved data')
 
-                elif option['specific'] == 'load': # Load the data from the "player" and "world" files, wont load any data if no save exists 
-                    game.player = data.load('player')
-                    game.world = data.load('world')
+                elif option['specific'] == 'load': # Load the data from the "player" and "world" files, wont load any data if no save exists
+                    player_data = data.load('player')
+                    world_data = data.load('world')
+
+                    if player_data and world_data: # Make sure that the data exists before attempting to replace current data
+                        game.player = player_data
+                        game.world = world_data
+
                     print_menu('')
                     _insert_label('\n\nLoaded data')
                 

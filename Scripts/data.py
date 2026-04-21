@@ -19,3 +19,4 @@ def load(filename: str) -> Any: # Load data from a JSON file
             return json.load(f)
     except FileNotFoundError:
         print(f'"{filename}" does not exist; Save once before attempting to load')
+        return False
