@@ -43,14 +43,7 @@
       "pathway"
     ],
     "items": [],
-    "puzzles": [
-      {
-        "desc": "Dig with shovel",
-        "requirement": "shovel",
-        "message": "You dig the ground in the middle of the clearing, discovering a buried chest",
-        "reward": "Mark of Secrets"
-      }
-    ]
+    "puzzles": []
   },
   "forest": {
     "desc": "You exit the graveyards grounds and enter a vast forest, you get a sense of dread...",
@@ -59,9 +52,7 @@
       "cabin",
       "river"
     ],
-    "items": [
-      "shovel"
-    ],
+    "items": [],
     "puzzles": []
   },
   "river": {
@@ -70,31 +61,15 @@
       "forest"
     ],
     "items": [],
-    "puzzles": [
-      {
-        "desc": "Take water with the bucket",
-        "requirement": "bucket",
-        "message": "You take some water from the river into the bucket",
-        "reward": "water"
-      }
-    ]
+    "puzzles": []
   },
   "cabin": {
     "desc": "You enter the cabin in the woods, within it a simple bed, a chair and a burning fireplace",
     "exits": [
       "forest"
     ],
-    "items": [
-      "bucket"
-    ],
-    "puzzles": [
-      {
-        "desc": "Put out the fireplace",
-        "requirement": "water",
-        "message": "You use the bucket of water to put out the fireplace and discover the Mark of Madness",
-        "reward": "Mark of Madness"
-      }
-    ]
+    "items": [],
+    "puzzles": []
   },
   "church": {
     "desc": "You enter a grand structure, the church...\nYou notice a locked chest upon the altar",
@@ -102,13 +77,6 @@
       "pathway"
     ],
     "items": [],
-    "puzzles": [
-      {
-        "desc": "Approach the altar... open the locked chest",
-        "requirement": "key",
-        "message": "You open the chest and discover the Mark of Whispers, one of three required to awaken the dread icon",
-        "reward": "Mark of Whispers"
-      }
-    ]
+    "puzzles": []
   }
 }

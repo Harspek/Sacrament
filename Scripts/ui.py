@@ -9,8 +9,8 @@ TODO: UI
 
 import tkinter
 from tkinter import Tk
-import game
-import data
+import game # Handles the backend gameplay
+import data # Handles the data management
 
 active = True # When active is set to false, the loop within __init__ ends, terminating the program
 
@@ -109,27 +109,29 @@ def _on_close(): # Tkinter handles closing the window, but certain additional fu
     print('Window has closed')
 
 def key_handler(event): 
-    """Handles keyboard events"""
-    #print(event.char, event.keysym, event.keycode)
+    """
+    Handles keyboard events
+    """
     if event.keysym == 'Return':
         input_text = custom_field.retrieve_input()
         try:
             # If the input is a value, we can assume it is relevant to selection of a currently available option
             option = options[int(input_text) - 1]
             if option['type'] == 'location': # If the option is defined as a location, the user is set to that location and the information is printed
-                game.player['location'] = option['specific']
+                game.change_location(option['specific'])
                 print_location('')
 
             elif option['type'] == 'item': # If the option is defined as an item, the item is added to their inventory
-                game.player['inv'].append(option['specific'])
+                game.add_item(option['specific'])
                 game.world[game.player['location']]['items'].remove(option['specific'])
                 print_location('')
                 _insert_label(f'\n\nYou took the {option['specific']}')
 
-            elif option['type'] == 'puzzle':
-                game.player['inv'].remove(game.world[game.player['location']] ['puzzles'] [option['specific']] ['requirement'])
-                game.player['inv'].append(game.world[game.player['location']] ['puzzles'] [option['specific']] ['reward'])
-                label_text = game.world[game.player['location']] ['puzzles'] [option['specific']] ['message']
+            elif option['type'] == 'puzzle': # If the option is a puzzle, which is only visible if the correct item is available, the item can be exchanged for another item
+                puzzle = game.world[game.player['location']] ['puzzles'] [option['specific']]
+                game.remove_item(puzzle['requirement'])
+                game.add_item(puzzle['reward'])
+                label_text = puzzle['message'] # Has to be separated from the puzzle before its removal
                 game.world[game.player['location']] ['puzzles'].pop(option['specific'])
                 print_location('')
                 _insert_label(f'\n\n{label_text}')
@@ -138,15 +140,21 @@ def key_handler(event):
                     window.destroy()
                     print('Annihilation...\n - THE END -')
             
-            elif option['type'] == 'menu':
-                if option['specific'] == 'save':
+            elif option['type'] == 'menu': # WHen in the menu the save, load and exit options are available
+                
+                if option['specific'] == 'save': # Save the data to the "player" and "world" files, this will overwrite previous ones
                     data.save('player', game.player)
                     data.save('world', game.world)
-                    pass
-                elif option['specific'] == 'load':
+                    print_menu('')
+                    _insert_label('\n\nSaved data')
+
+                elif option['specific'] == 'load': # Load the data from the "player" and "world" files, wont load any data if no save exists 
                     game.player = data.load('player')
                     game.world = data.load('world')
-                elif option['specific'] == 'exit':
+                    print_menu('')
+                    _insert_label('\n\nLoaded data')
+                
+                elif option['specific'] == 'exit': # Close the program
                     window.destroy()
 
         except ValueError:
@@ -156,12 +164,12 @@ def key_handler(event):
 
 # Window creation
 window = Tk()
-window.state('zoomed')
-window.title("Sacrament")
-window.minsize(1440, 960)
-window.maxsize(1920, 1920)
-window.config(background='lightgray')
-window.protocol('WM_DELETE_WINDOW', _on_close)
+window.state('zoomed') # The window is taken into focus
+window.title("Sacrament") # Entitles the window with the program name
+window.minsize(1440, 960) # Sets minimum size, so that the UI is not broken
+window.maxsize(1920, 1920) # Sets maximum size, the program is not intended for dual monitors
+window.config(background='lightgray') # Sets the basic background for the UI
+window.protocol('WM_DELETE_WINDOW', _on_close) # Adds an event to when the program is closed to prevent further code execution
 window.bind("<Key>", key_handler) # Handles keyboard input
 
 # Instance each required widget
@@ -171,7 +179,7 @@ custom_button_1 = CustomButton(window, text="Look around") # This button will re
 custom_button_2 = CustomButton(window, text="Check inventory") # Used when the user wants to use an item
 custom_button_3 = CustomButton(window, text="Menu") # Used then the player wants to drop an item, to free up inventory slots 
 
-# Pack widgets into window
+# Pack widgets into window; Pack is not ideal but grants greatest control over positioning
 dialog_label.place(relx=0, relheight=0.8, relwidth=1)
 custom_button_1.place(relx=0.35, rely=0.9)
 custom_button_2.place(relx=0.45, rely=0.9)
@@ -188,7 +196,7 @@ def _insert_label(text):
     """Adds text to the front textfield"""
     dialog_label.configure(text=dialog_label.cget('text') + str(text))
 
-# Replacement for mainloop
+# Replacement for Tkinter's mainloop for greater control over the program
 def _update_window():
     """Updates the user interface"""
     window.update()
@@ -226,6 +234,9 @@ def print_location(nil):
                 i += 1 # This value is used to match the puzzle from the list of puzzles
     
 def print_inventory(nil):
+    """
+    Prints the contents of the inventory; Pass an empty value to the nil variable
+    """
     _clear_label()
     _insert_label(f'You check inside your bag and find...\n\n')
     options.clear()
@@ -233,6 +244,9 @@ def print_inventory(nil):
         _insert_label(f'{item}\n')
 
 def print_menu(nil):
+    """
+    Prints the menu options; Pass an empty value to the nil variable
+    """
     _clear_label()
     _insert_label('Sacrament\nA text adventure made by Lassi & Lauri\n\n1. Save\n 2. Load\n3. Exit')
     options.clear()

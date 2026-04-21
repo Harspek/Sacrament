@@ -14,5 +14,8 @@ def save(filename: str, information: Any) -> None: # Save data to a JSON file
         json.dump(information, f, ensure_ascii=False, indent=2)
 
 def load(filename: str) -> Any: # Load data from a JSON file
-    with open(filename, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f'"{filename}" does not exist; Save once before attempting to load')

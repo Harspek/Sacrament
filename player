@@ -1,7 +1,9 @@
 {
   "location": "graveyard",
   "inv": [
-    "key"
+    "Mark of Madness",
+    "Mark of Secrets",
+    "Mark of Whispers"
   ],
   "end": 0
 }
