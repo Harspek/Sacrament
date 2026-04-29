@@ -1,4 +1,8 @@
-player = { # Received items and current location
-    'location': 'graveyard', 
-    'inv': ['key'],
-    'end': 0
+{
+  "location": "graveyard",
+  "inv": [
+    "key"
+  ],
+  "end": 0
+}
+
