@@ -2,7 +2,7 @@
 Filename: game.py
 Description: Various functions for the in-game experience
 Version: 1.2
-Author: Harspek
+Author: Harspek, lauriaalt
 Date: 08-03-2026
 """
 
@@ -12,7 +12,10 @@ player = load("data/player.json")
 
 world = load("data/world.json")
 
-def check_condition(): # Check for victory condition
+def check_condition():
+    """
+    Checks for the victory condition item 'Erebus', with 3 items completing the game
+    """
     if 'Erebus' in player['inv']:
         player['inv'].remove('Erebus')
         player['end'] += 1
@@ -20,6 +23,9 @@ def check_condition(): # Check for victory condition
             return True
 
 def change_location(to_move: str):
+    """
+    Change the location of the player to a string name
+    """
     player['location'] = to_move
 
 def add_item(item: str):
