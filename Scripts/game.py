@@ -6,11 +6,14 @@ Author: Harspek, lauriaalt
 Date: 08-03-2026
 """
 
-from data import load
+import data as dt
 
-player = load("data/player.json")
+world = dt.load("world")
+player = dt.load("player")
+if world or player:
+    world = dt.load("data/world.json")
+    player = dt.load("data/player.json")
 
-world = load("data/world.json")
 
 def check_condition():
     """
@@ -20,6 +23,8 @@ def check_condition():
         player['inv'].remove('Erebus')
         player['end'] += 1
         if player['end'] >= 3:
+            dt.save('player', dt.load('data/player.json'))
+            dt.save('world', dt.load('data/world.json'))
             return True
 
 def change_location(to_move: str):
